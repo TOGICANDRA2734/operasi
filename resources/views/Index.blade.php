@@ -5,11 +5,10 @@
     <!-- General Report -->
     <div class="grid grid-cols-6 gap-12 xl:grid-cols-1">
 
-
         <!-- card -->
         <div class="report-card relative pb-0">
             <img class="w-20 h-auto absolute rounded-full z-10 " src="{{asset('icon/mendung.GIF')}}" style="right: -2rem; top: -1.5rem;" alt="Asset">
-            <a href="{{route('')}}">
+            <a href="{{route('data-prod.show', 1)}}">
                 <div class="card border-red-100 pb-0">
                     <div class="card-body flex flex-col border pb-0">
                         <!-- top -->
