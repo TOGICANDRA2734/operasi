@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\dataProdController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChartJsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('Index');
-});
+Route::get('/', [dataProdController::class, 'index']);
 
-Route::resource('data-prod', dataProdController::class)->except('index');
+Route::resource('data-prod', dataProdController::class);
+// Route::get('chart-js', [ChartJSController::class, 'index']);

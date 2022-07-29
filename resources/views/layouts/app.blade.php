@@ -6,7 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="./img/fav.png" type="image/x-icon">
     <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v5.12.1/css/pro.min.css">
+    
+    <!-- Style Chart -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- end Style Chart -->
+    
     <link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('css/custom.css')}}">
     <title>PT RCI - Operasi</title>
 </head>
 
