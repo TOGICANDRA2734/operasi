@@ -19,4 +19,5 @@ use App\Http\Controllers\PmaDailyTcController;
 Route::get('/', [dataProdController::class, 'index']);
 
 Route::resource('data-prod', dataProdController::class);
+Route::post('detail-pit', [dataProdController::class, 'getPit'])->name('data-prod.getPit');
 // Route::get('chart-js', [ChartJSController::class, 'index']);

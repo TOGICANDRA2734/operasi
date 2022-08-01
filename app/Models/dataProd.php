@@ -18,5 +18,5 @@ class dataProd extends Model
         'cuaca',
         'kodesite'
     ];
-    protected $timestamps = false;
+    public $timestamps = false;
 }

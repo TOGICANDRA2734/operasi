@@ -145,7 +145,14 @@ class dataProdController extends Controller
      */
     public function create()
     {
-        return view('data-prod.create');
+        $site = DB::table('site')
+        ->select()
+        ->where('status_website', '=', 1)
+        ->where('status', '=', 1)
+        ->orderBy('id')
+        ->get();
+        
+        return view('data-prod.create', compact('site'));
     }
 
     /**
@@ -156,7 +163,27 @@ class dataProdController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'pit' => 'required',
+            'ob' => 'required',
+            'coal' => 'required',
+            'kodesite' => 'required',
+        ]);
+
+        $record = dataProd::create([
+            'tgl'           => Carbon::now(),
+            'pit'           => $request->pit,
+            'ob'            => $request->ob,
+            'coal'          => $request->coal,
+            'kodesite'      => $request->kodesite,
+        ]);
+
+        if($record){
+            return redirect()->route('data-prod.index')->with(['success' => 'Data Berhasil Ditambah!']);
+        }
+        else{
+            return redirect()->route('data-prod.index')->with(['error' => 'Data Gagal Ditambah!']);
+        }
     }
 
     /**
@@ -202,5 +229,27 @@ class dataProdController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    /**
+     * Give new data pit based on site
+     * 
+     * @param varchar $kodesite
+     */
+    public function getPit(Request $request)
+    {
+        if ($request->kodesite) {
+            $response = DB::table('pma_dailyprod_pit')
+            ->select('kodepit', 'ket')
+            ->where('kodesite', '=', $request->kodesite)
+            ->where('status', '=', 1)
+            ->get();
+            if ($response) {
+                return response()->json(['status' => 'success', 'data' => $response], 200);
+            }
+            return response()->json(['status' => 'failed', 'message' => 'No frameworks found'], 404);
+        }
+        return response()->json(['status' => 'failed', 'message' => 'Please select language'], 500);
     }
 }

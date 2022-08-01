@@ -15,6 +15,7 @@
     
     <link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('css/custom.css')}}">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>PT RCI - Operasi</title>
 </head>
 
@@ -137,18 +138,12 @@
                 <p class="uppercase text-xs text-gray-600 mb-4 tracking-wider">Transaksi</p>
 
                 <!-- link -->
-                <a href="./index.html" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+                <a href="{{route('data-prod.create')}}" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
                     <i class="fad fa-chart-pie text-xs mr-2"></i>
-                    Analytics dashboard
+                    Transaksi Aktual
                 </a>
                 <!-- end link -->
 
-                <!-- link -->
-                <a href="./index-1.html" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-                    <i class="fad fa-shopping-cart text-xs mr-2"></i>
-                    ecommerce dashboard
-                </a>
-                <!-- end link -->
 
                 <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">Reports</p>
 
