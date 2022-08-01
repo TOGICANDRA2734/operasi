@@ -3,6 +3,7 @@
 use App\Http\Controllers\dataProdController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChartJsController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PmaDailyTcController;
 
 /*
@@ -16,7 +17,7 @@ use App\Http\Controllers\PmaDailyTcController;
 |
 */
 
-Route::get('/', [dataProdController::class, 'index']);
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::resource('data-prod', dataProdController::class);
 Route::post('detail-pit', [dataProdController::class, 'getPit'])->name('data-prod.getPit');

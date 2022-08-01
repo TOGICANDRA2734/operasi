@@ -2,307 +2,121 @@
 
 @section('content')
 <div class="bg-gray-100 flex-1 p-6 md:mt-16 overflow-hidden">
-    <!-- Tanggal Produksi -->
-    <h2 class="font-bold mb-3 text-xl text-center">Periode: {{date('l, d-m-Y', strtotime($persenTotalObHarian[0]->tgl))}}</h2>
+    <!-- Title -->
+    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+        Produksi Actual
+    </h2>
     <hr class="mb-10">
 
-    <!-- General Report -->
-    <div class="grid grid-cols-6 gap-12 xl:grid-cols-1">
-
-        @foreach($site as $st)
-        <!-- card -->
-        <div class="report-card relative">
-            <img class="w-20 h-auto absolute right-0 rounded-full z-10" src="{{asset('icon/mendung.GIF')}}" style="right: -2rem; top: -1.5rem;" alt="Asset">
-            <a href="">
-                <div class="card border-red-100 ">
-                    <div class="card-body flex flex-col border ">
-                        <!-- top -->
-                        <div class="flex flex-row justify-between items-center">
-                            <div class="flex items-center">
-                                <img class="w-10 h-10" src="http://192.168.20.100/gambar/{{$st->gambar}}" class="h6 text-indigo-700 fad fa-shopping-cart"></img>
-                                <p class="ml-3 font-bold text-black">{{$st->namasite}}</p>
-                            </div>
-                        </div>
-                        <!-- end top -->
-
-                        <!-- bottom -->
-                        <div class="mt-8 ">
-                            <div class="flex justify-between items-center">
-                                <div class="flex flex-col">
-                                    <p>OB <span class="text-xs opacity-80">(bcm)</span></p>
-                                    <h4 class="font-bold text-xl">{{number_format($totalOBHarian[0]->totalOb)}}</h4>
-                                </div>
-                                <div class="rounded-full text-white badge bg-teal-400 text-xs h-5">
-                                    {{number_format($persenTotalObHarian[0]->ob_ach, 1)}}%
-                                    <i class="fal fa-chevron-up ml-1"></i>
-                                </div>
-                            </div>
-                            <div class="flex justify-between items-center mt-3">
-                                <div class="flex flex-col">
-                                    <p>Coal <span class="text-xs opacity-80">(mt)</span></p>
-                                    <h1 class="font-bold text-xl">{{number_format($totalOBHarian[0]->totalCoal)}}</h1>
-                                </div>
-                                <div class="rounded-full text-white badge bg-teal-400 text-xs h-5 align-middle">
-                                    {{number_format($persenTotalObHarian[0]->coal_ach, 1)}}%
-                                    <i class="fal fa-chevron-up ml-1"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end bottom -->
-
-
-                    </div>
-                </div>
-                <div class="footer bg-white p-1 mx-4 border border-t-0 rounded rounded-t-none"></div>
-            </a>
+    <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
+        <div class="w-full overflow-x-auto">
+            <table class="w-full ">
+                <thead class="bg-black sticky top-0 z-20">
+                    <tr class="text-xs font-semibold tracking-wide text-center text-white uppercase">
+                        <th rowspan="2" class="px-4 py-3 border">Tanggal</th>
+                        <th colspan="2" class="px-4 py-3 border">Overburden</th>
+                        <th colspan="2" class="px-4 py-3 border">Coal</th>
+                        <th rowspan="2" class="px-4 py-3 border w-[10rem]">Aksi</th>
+                    </tr>
+                    <tr class="text-xs font-semibold tracking-wide text-center text-white uppercase">
+                        <th class="px-4 py-3 border">ACT</th>
+                        <th class="px-4 py-3 border">Plan</th>
+                        <th class="px-4 py-3 border">ACT</th>
+                        <th class="px-4 py-3 border">Plan</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+                    @foreach($data as $dt)
+                        <tr class="text-gray-700 dark:text-gray-400">
+                            <td class="px-4 py-3 text-center">
+                                {{date('d-m-Y', strtotime($dt->tgl))}}
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                                {{$dt->act_ob}}
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                                {{$dt->plan_ob}}
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                                {{$dt->act_coal}}
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                                {{$dt->plan_coal}}
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                                <a class="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-yellow-400 rounded-md active:bg-yellow-600 hover:bg-yellow-900 sm:mr-1 cursor-pointer">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </a>
+                                <button class="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-500 rounded-md active:bg-red-600 hover:bg-red-900  cursor-pointer">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-        <!-- end card -->
-        @endforeach
-
+        <div class="flex justify-between items-center px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+            <span class="flex items-center col-span-3">
+                Showing 21-30 of 100
+            </span>
+            <span class="col-span-2"></span>
+            <!-- Pagination -->
+            <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+                <nav aria-label="Table navigation">
+                    <ul class="inline-flex items-center">
+                        <li>
+                            <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                                <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                    <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                        </li>
+                        <li>
+                            <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                                1
+                            </button>
+                        </li>
+                        <li>
+                            <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                                2
+                            </button>
+                        </li>
+                        <li>
+                            <button class="px-3 py-1 text-white transition-colors duration-150 bg-purple-600 border border-r-0 border-purple-600 rounded-md focus:outline-none focus:shadow-outline-purple">
+                                3
+                            </button>
+                        </li>
+                        <li>
+                            <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                                4
+                            </button>
+                        </li>
+                        <li>
+                            <span class="px-3 py-1">...</span>
+                        </li>
+                        <li>
+                            <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                                8
+                            </button>
+                        </li>
+                        <li>
+                            <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                                9
+                            </button>
+                        </li>
+                        <li>
+                            <button class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                                <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
+                                    <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            </span>
+        </div>
     </div>
-    <!-- End General Report -->
-
-
-    <!-- Overburden Overview -->
-    <div class="card mt-6">
-
-        <!-- header -->
-        <div class="card-header flex flex-row justify-between">
-            <h1 class="h6">Month To Date - Overburden</h1>
-
-            <div class="flex flex-row justify-center items-center">
-
-                <a href="">
-                    <i class="fad fa-chevron-double-down mr-6"></i>
-                </a>
-
-                <a href="">
-                    <i class="fad fa-ellipsis-v"></i>
-                </a>
-
-            </div>
-
-        </div>
-        <!-- end header -->
-
-        <!-- body -->
-        <div class="card-body grid grid-cols-2 gap-6 lg:grid-cols-1">
-
-            <div class="p-8 flex flex-col justify-between">
-                <div class="grid grid-cols-3 gap-3">
-                    <div class="">
-                        <h2 class="h6 text-gray-700">Actual</h2>
-                        <h1 class="h3">{{number_format($data_detail_OB_prod[0]->OB, 0, '.', ',')}}</h1>
-                        <p class="text-black font-medium">BCM</p>
-                    </div>
-                    <div class="">
-                        <h2 class="h6 text-gray-700">Plan</h2>
-                        <h1 class="h3">{{number_format($data_detail_OB_plan[0]->OB, 0, '.', ',')}}</h1>
-                        <p class="text-black font-medium">BCM</p>
-                    </div>
-                    <div class="">
-                        <h2 class="h6 text-gray-700">ACH</h2>
-                        @if($data_detail_OB_plan[0]->OB != 0)
-                            <h1 class="h3">{{number_format($data_detail_OB_prod[0]->OB / $data_detail_OB_plan[0]->OB * 100)}}</h1>
-                        @else
-                            <h1 class="h3">NA</h1>
-                        @endif
-                        <p class="text-black font-medium">%</p>
-                    </div>
-                </div>
-
-
-                <a href="#" class="btn-shadow mt-6">view details</a>
-            </div>
-
-            <div class="">
-                <div class="chart-container">
-                    <div class="pie-chart-container">
-                        <canvas id="overburden"></canvas>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <!-- end body -->
-
-    </div>
-    <!-- end Overburden Overview -->
-
-
-    <!-- Coal Overview -->
-    <div class="card mt-6">
-
-        <!-- header -->
-        <div class="card-header flex flex-row justify-between">
-            <h1 class="h6">Month To Date - Coal</h1>
-
-            <div class="flex flex-row justify-center items-center">
-
-                <a href="">
-                    <i class="fad fa-chevron-double-down mr-6"></i>
-                </a>
-
-                <a href="">
-                    <i class="fad fa-ellipsis-v"></i>
-                </a>
-
-            </div>
-
-        </div>
-        <!-- end header -->
-
-        <!-- body -->
-        <div class="card-body grid grid-cols-2 gap-6 lg:grid-cols-1">
-
-            <div class="p-8 flex flex-col justify-between">
-                <div class="grid grid-cols-3 gap-3">
-                    <div class="">
-                        <h2 class="h6 text-gray-700">Actual</h2>
-                        <h1 class="h3">{{number_format($data_detail_coal_prod[0]->coal, 0, '.', ',')}}</h1>
-                        <p class="text-black font-medium">BCM</p>
-                    </div>
-                    <div class="">
-                        <h2 class="h6 text-gray-700">Plan</h2>
-                        <h1 class="h3">{{number_format($data_detail_coal_plan[0]->coal, 0, '.', ',')}}</h1>
-                        <p class="text-black font-medium">BCM</p>
-                    </div>
-                    <div class="">
-                        <h2 class="h6 text-gray-700">ACH</h2>
-
-                        @if($data_detail_coal_plan[0]->coal != 0)
-                            <h1 class="h3">{{number_format($data_detail_coal_prod[0]->coal / $data_detail_coal_plan[0]->coal * 100)}}</h1>
-                        @else
-                            <h1 class="h3">NA</h1>
-                        @endif
-                        <p class="text-black font-medium">%</p>
-                    </div>
-                </div>
-
-
-                <a href="#" class="btn-shadow mt-6">view details</a>
-
-            </div>
-
-            <div class="">
-                <div class="chart-container">
-                    <div class="pie-chart-container">
-                        <canvas id="coal"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- end body -->
-    </div>
-    <!-- end Coal Overview -->
 </div>
 
-<!-- javascript -->
-
-<script>
-    $(function() {
-        // OVERBURDEN
-        //get the OB data
-        var ob_prod = JSON.parse(`<?php echo $data_prod_ob['chart_data_prod_ob']; ?>`);
-        var ob_plan = JSON.parse(`<?php echo $data_plan_ob['chart_data_plan_ob']; ?>`);
-        var ctx = $("#overburden");
-
-        //Multi Chart
-        var data = {
-            labels: ob_prod.label,
-            datasets: [{
-                type: 'bar',
-                label: 'Overburden',
-                data: ob_prod.data,
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'rgba(255, 99, 132, 0.2)'
-            }, {
-                type: 'line',
-                label: 'Plan',
-                data: ob_plan.data,
-                fill: false,
-                borderColor: 'rgb(54, 162, 235)'
-            }]
-        };
-
-        //options
-        var options = {
-            responsive: true,
-            title: {
-                display: true,
-                position: "top",
-                text: "",
-                fontSize: 18,
-                fontColor: "#111"
-            },
-            legend: {
-                display: true,
-                position: "bottom",
-                labels: {
-                    fontColor: "#333",
-                    fontSize: 16
-                }
-            }
-        };
-
-        //   Create Mixed Chart
-        var chart1 = new Chart(ctx, {
-            type: "bar",
-            data: data,
-            options: options
-        });
-
-        // Coal
-        //get the Coal data
-        var coal_prod = JSON.parse(`<?php echo $data_prod_coal['chart_data_prod_coal']; ?>`);
-        var coal_plan = JSON.parse(`<?php echo $data_plan_coal['chart_data_plan_coal']; ?>`);
-        var ctx = $("#coal");
-
-        //Multi Chart
-        var data = {
-            labels: coal_prod.label,
-            datasets: [{
-                type: 'bar',
-                label: 'Overburden',
-                data: coal_prod.data,
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'rgba(255, 99, 132, 0.2)'
-            }, {
-                type: 'line',
-                label: 'Plan',
-                data: coal_plan.data,
-                fill: false,
-                borderColor: 'rgb(54, 162, 235)'
-            }]
-        };
-
-        //options
-        var options = {
-            responsive: true,
-            title: {
-                display: true,
-                position: "top",
-                text: "",
-                fontSize: 18,
-                fontColor: "#111"
-            },
-            legend: {
-                display: true,
-                position: "bottom",
-                labels: {
-                    fontColor: "#333",
-                    fontSize: 16
-                }
-            }
-        };
-
-        //   Create Mixed Chart
-        var chart2 = new Chart(ctx, {
-            type: "bar",
-            data: data,
-            options: options
-        });
-
-    });
-</script>
 @endsection
