@@ -3,6 +3,7 @@
 use App\Http\Controllers\dataProdController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChartJsController;
+use App\Http\Controllers\PmaDailyTcController;
 
 /*
 |--------------------------------------------------------------------------

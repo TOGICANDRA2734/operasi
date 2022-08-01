@@ -3,12 +3,13 @@
 @section('content')
 <div class="bg-gray-100 flex-1 p-6 md:mt-16 overflow-hidden">
     <!-- Tanggal Produksi -->
-    <h2 class="font-bold mb-3 text-xl text-center">Jumat, 28 Juli 2022</h2>
+    <h2 class="font-bold mb-3 text-xl text-center">Periode: {{date('l, d-m-Y', strtotime($persenTotalObHarian[0]->tgl))}}</h2>
     <hr class="mb-10">
 
     <!-- General Report -->
     <div class="grid grid-cols-6 gap-12 xl:grid-cols-1">
 
+        @foreach($site as $st)
         <!-- card -->
         <div class="report-card relative">
             <img class="w-20 h-auto absolute right-0 rounded-full z-10" src="{{asset('icon/mendung.GIF')}}" style="right: -2rem; top: -1.5rem;" alt="Asset">
@@ -18,8 +19,8 @@
                         <!-- top -->
                         <div class="flex flex-row justify-between items-center">
                             <div class="flex items-center">
-                                <img class="w-10 h-10" src="{{asset('/icon_company/ABK.jpg')}}" class="h6 text-indigo-700 fad fa-shopping-cart"></img>
-                                <p class="ml-3 font-bold text-black">ABK</p>
+                                <img class="w-10 h-10" src="http://192.168.20.100/gambar/{{$st->gambar}}" class="h6 text-indigo-700 fad fa-shopping-cart"></img>
+                                <p class="ml-3 font-bold text-black">{{$st->namasite}}</p>
                             </div>
                         </div>
                         <!-- end top -->
@@ -29,20 +30,20 @@
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
                                     <p>OB <span class="text-xs opacity-80">(bcm)</span></p>
-                                    <h4 class="font-bold text-xl">{{$totalOBHarian[0]->totalOb}}</h4>
+                                    <h4 class="font-bold text-xl">{{number_format($totalOBHarian[0]->totalOb)}}</h4>
                                 </div>
                                 <div class="rounded-full text-white badge bg-teal-400 text-xs h-5">
-                                    {{$persenTotalObHarian[1]->ob / $persenTotalObHarian[0]->ob * 100}}%
+                                    {{number_format($persenTotalObHarian[0]->ob_ach, 1)}}%
                                     <i class="fal fa-chevron-up ml-1"></i>
                                 </div>
                             </div>
                             <div class="flex justify-between items-center mt-3">
                                 <div class="flex flex-col">
                                     <p>Coal <span class="text-xs opacity-80">(mt)</span></p>
-                                    <h1 class="font-bold text-xl">{{$totalOBHarian[0]->totalCoal}}</h1>
+                                    <h1 class="font-bold text-xl">{{number_format($totalOBHarian[0]->totalCoal)}}</h1>
                                 </div>
                                 <div class="rounded-full text-white badge bg-teal-400 text-xs h-5 align-middle">
-                                    {{$persenTotalObHarian[1]->coal / $persenTotalObHarian[0]->coal * 100}}%
+                                    {{number_format($persenTotalObHarian[0]->coal_ach, 1)}}%
                                     <i class="fal fa-chevron-up ml-1"></i>
                                 </div>
                             </div>
@@ -56,235 +57,7 @@
             </a>
         </div>
         <!-- end card -->
-
-
-        <!-- card -->
-        <div class="report-card relative">
-            <img class="w-20 h-auto absolute right-0 rounded-full z-10" src="{{asset('icon/mendung.GIF')}}" style="right: -2rem; top: -1.5rem;" alt="Asset">
-            <div class="card border-red-100 ">
-                <div class="card-body flex flex-col border ">
-                    <!-- top -->
-                    <div class="flex flex-row justify-between items-center">
-                        <div class="flex items-center">
-                            <img class="w-10 h-10" src="{{asset('/icon_company/ABN.png')}}" class="h6 text-indigo-700 fad fa-shopping-cart"></img>
-                            <p class="ml-3 font-bold text-black">ABN</p>
-                        </div>
-                    </div>
-                    <!-- end top -->
-
-                    <!-- bottom -->
-                    <div class="mt-8 ">
-                        <div class="flex justify-between items-center">
-                            <div class="flex flex-col">
-                                <p>OB <span class="text-xs opacity-80">(bcm)</span></p>
-                                <h1 class="font-bold text-xl num-4"></h1>
-                            </div>
-                            <div class="rounded-full text-white badge bg-teal-400 text-xs h-5">
-                                12%
-                                <i class="fal fa-chevron-up ml-1"></i>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center mt-3">
-                            <div class="flex flex-col">
-                                <p>Coal <span class="text-xs opacity-80">(mt)</span></p>
-                                <h1 class="font-bold text-xl num-4"></h1>
-                            </div>
-                            <div class="rounded-full text-white badge bg-teal-400 text-xs h-5">
-                                12%
-                                <i class="fal fa-chevron-up ml-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end bottom -->
-
-
-                </div>
-            </div>
-            <div class="footer bg-white p-1 mx-4 border border-t-0 rounded rounded-t-none"></div>
-        </div>
-        <!-- end card -->
-
-        <!-- card -->
-        <div class="report-card relative">
-            <img class="w-20 h-auto absolute right-0 rounded-full z-10" src="{{asset('icon/mendung.GIF')}}" style="right: -2rem; top: -1.5rem;" alt="Asset">
-            <div class="card border-red-100 ">
-                <div class="card-body flex flex-col border ">
-                    <!-- top -->
-                    <div class="flex flex-row justify-between items-center">
-                        <div class="flex items-center">
-                            <img class="w-10 h-10" src="{{asset('/icon_company/IM.png')}}" class="h6 text-indigo-700 fad fa-shopping-cart"></img>
-                            <p class="ml-3 font-bold text-black">IM</p>
-                        </div>
-                    </div>
-                    <!-- end top -->
-
-                    <!-- bottom -->
-                    <div class="mt-8 ">
-                        <div class="flex justify-between items-center">
-                            <div class="flex flex-col">
-                                <p>OB <span class="text-xs opacity-80">(bcm)</span></p>
-                                <h1 class="font-bold text-xl num-4"></h1>
-                            </div>
-                            <div class="rounded-full text-white badge bg-teal-400 text-xs h-5">
-                                12%
-                                <i class="fal fa-chevron-up ml-1"></i>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center mt-3">
-                            <div class="flex flex-col">
-                                <p>Coal <span class="text-xs opacity-80">(mt)</span></p>
-                                <h1 class="font-bold text-xl num-4"></h1>
-                            </div>
-                            <div class="rounded-full text-white badge bg-teal-400 text-xs h-5">
-                                12%
-                                <i class="fal fa-chevron-up ml-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end bottom -->
-
-
-                </div>
-            </div>
-            <div class="footer bg-white p-1 mx-4 border border-t-0 rounded rounded-t-none"></div>
-        </div>
-        <!-- end card -->
-
-        <!-- card -->
-        <div class="report-card relative">
-            <img class="w-20 h-auto absolute right-0 rounded-full z-10" src="{{asset('icon/mendung.GIF')}}" style="right: -2rem; top: -1.5rem;" alt="Asset">
-            <div class="card border-red-100 ">
-                <div class="card-body flex flex-col border ">
-                    <!-- top -->
-                    <div class="flex flex-row justify-between items-center">
-                        <div class="flex items-center">
-                            <img class="w-10 h-10" src="{{asset('/icon_company/KE.png')}}" class="h6 text-indigo-700 fad fa-shopping-cart"></img>
-                            <p class="ml-3 font-bold text-black">KE</p>
-                        </div>
-                    </div>
-                    <!-- end top -->
-
-                    <!-- bottom -->
-                    <div class="mt-8 ">
-                        <div class="flex justify-between items-center">
-                            <div class="flex flex-col">
-                                <p>OB <span class="text-xs opacity-80">(bcm)</span></p>
-                                <h1 class="font-bold text-xl num-4"></h1>
-                            </div>
-                            <div class="rounded-full text-white badge bg-teal-400 text-xs h-5">
-                                12%
-                                <i class="fal fa-chevron-up ml-1"></i>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center mt-3">
-                            <div class="flex flex-col">
-                                <p>Coal <span class="text-xs opacity-80">(mt)</span></p>
-                                <h1 class="font-bold text-xl num-4"></h1>
-                            </div>
-                            <div class="rounded-full text-white badge bg-teal-400 text-xs h-5">
-                                12%
-                                <i class="fal fa-chevron-up ml-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end bottom -->
-
-
-                </div>
-            </div>
-            <div class="footer bg-white p-1 mx-4 border border-t-0 rounded rounded-t-none"></div>
-        </div>
-        <!-- end card -->
-        <!-- card -->
-        <div class="report-card relative">
-            <img class="w-20 h-auto absolute right-0 rounded-full z-10" src="{{asset('icon/mendung.GIF')}}" style="right: -2rem; top: -1.5rem;" alt="Asset">
-            <div class="card border-red-100 ">
-                <div class="card-body flex flex-col border ">
-                    <!-- top -->
-                    <div class="flex flex-row justify-between items-center">
-                        <div class="flex items-center">
-                            <img class="w-10 h-10" src="{{asset('/icon_company/GDM.jpg')}}" class="h6 text-indigo-700 fad fa-shopping-cart"></img>
-                            <p class="ml-3 font-bold text-black">GDM</p>
-                        </div>
-                    </div>
-                    <!-- end top -->
-
-                    <!-- bottom -->
-                    <div class="mt-8 ">
-                        <div class="flex justify-between items-center">
-                            <div class="flex flex-col">
-                                <p>OB <span class="text-xs opacity-80">(bcm)</span></p>
-                                <h1 class="font-bold text-xl num-4"></h1>
-                            </div>
-                            <div class="rounded-full text-white badge bg-teal-400 text-xs h-5">
-                                12%
-                                <i class="fal fa-chevron-up ml-1"></i>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center mt-3">
-                            <div class="flex flex-col">
-                                <p>Coal <span class="text-xs opacity-80">(mt)</span></p>
-                                <h1 class="font-bold text-xl num-4"></h1>
-                            </div>
-                            <div class="rounded-full text-white badge bg-teal-400 text-xs h-5">
-                                12%
-                                <i class="fal fa-chevron-up ml-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end bottom -->
-
-
-                </div>
-            </div>
-            <div class="footer bg-white p-1 mx-4 border border-t-0 rounded rounded-t-none"></div>
-        </div>
-        <!-- end card -->
-        <!-- card -->
-        <div class="report-card relative">
-            <img class="w-20 h-auto absolute right-0 rounded-full z-10" src="{{asset('icon/mendung.GIF')}}" style="right: -2rem; top: -1.5rem;" alt="Asset">
-            <div class="card border-red-100 ">
-                <div class="card-body flex flex-col border ">
-                    <!-- top -->
-                    <div class="flex flex-row justify-between items-center">
-                        <div class="flex items-center">
-                            <img class="w-10 h-10" src="{{asset('/icon_company/dummy.png')}}" class="h6 text-indigo-700 fad fa-shopping-cart"></img>
-                            <p class="ml-3 font-bold text-black">ACL</p>
-                        </div>
-                    </div>
-                    <!-- end top -->
-
-                    <!-- bottom -->
-                    <div class="mt-8 ">
-                        <div class="flex justify-between items-center">
-                            <div class="flex flex-col">
-                                <p>OB <span class="text-xs opacity-80">(bcm)</span></p>
-                                <h1 class="font-bold text-xl num-4"></h1>
-                            </div>
-                            <div class="rounded-full text-white badge bg-teal-400 text-xs h-5">
-                                12%
-                                <i class="fal fa-chevron-up ml-1"></i>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center mt-3">
-                            <div class="flex flex-col">
-                                <p>Coal <span class="text-xs opacity-80">(mt)</span></p>
-                                <h1 class="font-bold text-xl num-4"></h1>
-                            </div>
-                            <div class="rounded-full text-white badge bg-teal-400 text-xs h-5">
-                                12%
-                                <i class="fal fa-chevron-up ml-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end bottom -->
-
-
-                </div>
-            </div>
-            <div class="footer bg-white p-1 mx-4 border border-t-0 rounded rounded-t-none"></div>
-        </div>
-        <!-- end card -->
+        @endforeach
 
     </div>
     <!-- End General Report -->
@@ -329,7 +102,11 @@
                     </div>
                     <div class="">
                         <h2 class="h6 text-gray-700">ACH</h2>
-                        <h1 class="h3">{{number_format($data_detail_OB_prod[0]->OB / $data_detail_OB_plan[0]->OB * 100)}}</h1>
+                        @if($data_detail_OB_plan[0]->OB != 0)
+                            <h1 class="h3">{{number_format($data_detail_OB_prod[0]->OB / $data_detail_OB_plan[0]->OB * 100)}}</h1>
+                        @else
+                            <h1 class="h3">NA</h1>
+                        @endif
                         <p class="text-black font-medium">%</p>
                     </div>
                 </div>
@@ -392,7 +169,12 @@
                     </div>
                     <div class="">
                         <h2 class="h6 text-gray-700">ACH</h2>
-                        <h1 class="h3">{{number_format($data_detail_coal_prod[0]->coal / $data_detail_coal_plan[0]->coal * 100)}}</h1>
+
+                        @if($data_detail_coal_plan[0]->coal != 0)
+                            <h1 class="h3">{{number_format($data_detail_coal_prod[0]->coal / $data_detail_coal_plan[0]->coal * 100)}}</h1>
+                        @else
+                            <h1 class="h3">NA</h1>
+                        @endif
                         <p class="text-black font-medium">%</p>
                     </div>
                 </div>
