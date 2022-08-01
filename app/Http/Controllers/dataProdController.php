@@ -16,11 +16,28 @@ class dataProdController extends Controller
      */
     public function index()
     {
-        $data =  DB::table('pma_dailyprod_tc')
-        ->select(DB::raw('pma_dailyprod_tc.id, pma_dailyprod_tc.tgl, pma_dailyprod_tc.ob act_ob, pma_dailyprod_tc.coal act_coal, pma_dailyprod_plan.ob plan_ob,  pma_dailyprod_plan.coal plan_coal'))
-        ->join('pma_dailyprod_plan', 'pma_dailyprod_tc.tgl', '=', 'pma_dailyprod_plan.tgl')
-        ->groupBy('pma_dailyprod_tc.tgl')
-        ->get();
+        // $data =  DB::table('pma_dailyprod_tc')
+        // ->select(DB::raw('pma_dailyprod_tc.id, pma_dailyprod_tc.tgl, pma_dailyprod_tc.ob act_ob, pma_dailyprod_tc.coal act_coal, pma_dailyprod_plan.ob plan_ob,  pma_dailyprod_plan.coal plan_coal'))
+        // ->join('pma_dailyprod_plan', 'pma_dailyprod_tc.tgl', '=', 'pma_dailyprod_plan.tgl')
+        // ->where('pma_dailyprod_tc.kodesite', '=', 'I')
+        // ->groupBy('pma_dailyprod_tc.tgl')
+        // ->get();
+
+        $subquery = "SELECT 
+        A.id,
+        A.TGL,
+        A.ob OB_PLAN ,
+        A.coal COAL_PLAN,
+        IFNULL(B.ob,0) OB_ACTUAL,
+        IFNULL(B.coal,0) COAL_ACTUAL,
+        IFNULL(STATUS,0) STATUS
+        FROM pma_dailyprod_PLAN A
+        LEFT JOIN (SELECT * FROM pma_dailyprod_TC WHERE tgl BETWEEN '2022-07-01' AND '2022-07-31' AND kodesite='T') B
+        ON A.tgl = B.tgl
+        WHERE A.tgl BETWEEN '2022-07-01' AND '2022-07-31' AND A.kodesite='T'
+        ORDER BY a.tgl";
+
+        $data = collect(DB::select($subquery));
 
         return view('data-prod.index', compact('data'));
     }
@@ -84,15 +101,49 @@ class dataProdController extends Controller
         return view('data-prod.show');
     }
 
+   /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show_detail($id)
+    {
+        return view('data-prod.show');
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, $other)
     {
-        //
+        dd($id, $other);
+
+        $site = DB::table('site')
+        ->select()
+        ->where('status_website', '=', 1)
+        ->where('status', '=', 1)
+        ->orderBy('id')
+        ->get();
+        
+        return view('data-prod.edit', compact('site'));
+    }
+
+    public function edit_data($id, $other)
+    {
+        dd($id, $other);
+
+        $site = DB::table('site')
+        ->select()
+        ->where('status_website', '=', 1)
+        ->where('status', '=', 1)
+        ->orderBy('id')
+        ->get();
+        
+        return view('data-prod.edit', compact('site'));
     }
 
     /**

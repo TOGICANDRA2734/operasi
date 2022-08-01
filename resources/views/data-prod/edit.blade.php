@@ -4,7 +4,7 @@
 <div class="bg-gray-100 flex-1 p-6 md:mt-16 overflow-hidden">
     <!-- Title -->
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-        Produksi Actual
+        Edit Produksi Actual
     </h2>
     <hr class="mb-10">
 
@@ -16,13 +16,13 @@
             <form action="{{route('data-prod.store')}}" method="POST" id="storeDok" class="px-4 py-3 mb-8 grid grid-cols-2 gap-5 bg-white rounded-lg  dark:bg-gray-800">
                 @csrf
                 @method('PUT')
-
+                {{$data_prod->STATUS}}
                 <label class="block mt-1 text-sm">
                     <span class="font-semibold text-gray-700 dark:text-gray-400">Site</span>
                     <select class="block shadow-sm border p-2 rounded-md w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-stone-400 focus:outline-none focus:shadow-outline-stone dark:focus:shadow-outline-gray" name="kodesite" id="kodesite">
                         <option  value="">Pilih</option>
                         @foreach($site as $st)
-                        <option value="{{$st->kodesite}}">{{$st->namasite}} - {{$st->lokasi}}</option>
+                            <option value="{{$st->kodesite}}">{{$st->namasite}} - {{$st->lokasi}}</option>
                         @endforeach
                     </select>
                 </label>
