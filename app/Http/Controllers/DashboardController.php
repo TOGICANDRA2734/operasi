@@ -182,18 +182,22 @@ class DashboardController extends Controller
         /**
          * Data Bulanan
          */
-        $subquery = "SELECT A.tgl, A.pit, A.ob ob_act, A.coal coal_act, B.ob ob_plan, B.coal coal_plan,
-        ((A.ob / B.ob)*100) ob_ach,((A.coal/B.coal)*100) coal_ach, C.kodesite, C.namasite
+        $subquery = "SELECT A.tgl tgl, SUM(A.OB) ob_act, SUM(B.OB) ob_plan, SUM(A.coal) coal_act, SUM(B.coal) coal_plan, C.namasite
         FROM pma_dailyprod_tc A
-        JOIN (SELECT * FROM pma_dailyprod_plan WHERE tgl BETWEEN '2022-07-01' AND '2022-07-31' AND kodesite='I' GROUP BY tgl ORDER BY tgl) B 
+        JOIN (SELECT * FROM pma_dailyprod_plan WHERE ".$tanggal." AND kodesite = '".$site."' GROUP BY tgl) B
         ON A.tgl = B.tgl
         JOIN site C
         ON A.kodesite = C.kodesite
-        WHERE A.tgl BETWEEN '2022-07-01' AND '2022-07-31' AND A.kodesite='I'
-        GROUP BY A.tgl, A.pit
-        ORDER BY A.tgl";
-
+        WHERE ".$tanggalKedua."
+        AND A.kodesite = '".$site."'
+        GROUP BY A.tgl";
         $data = collect(DB::select($subquery));
-        return view('dashboard.show', compact('data','data_prod_ob','data_plan_ob','data_prod_coal','data_plan_coal'));
+
+        $subquery = "SELECT DISTINCT ket
+        FROM pma_dailyprod_pit
+        WHERE kodesite='".$site."'";
+        $pit = collect(DB::select($subquery));
+
+        return view('dashboard.show', compact('data','data_prod_ob','data_plan_ob','data_prod_coal','data_plan_coal', 'pit'));
     }
 }
