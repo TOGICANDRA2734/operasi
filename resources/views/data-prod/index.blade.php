@@ -8,6 +8,7 @@
     </h2>
     <hr class="mb-10">
 
+    <!-- Table -->
     <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
         <div class="w-full overflow-x-auto">
             <table class="w-full ">

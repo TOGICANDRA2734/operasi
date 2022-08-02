@@ -3,7 +3,8 @@
 @section('content')
 <div class="bg-gray-100 flex-1 p-6 md:mt-16 overflow-hidden">
     <!-- Title -->
-    <h1 class="font-bold text-xl">Detail Site ABK</h1>
+    <h1 class="font-bold text-xl">Detail Site {{$data[0]->namasite}}</h1>
+
 
     <!-- carts -->
     <div class="flex flex-col mt-6">
@@ -14,29 +15,41 @@
             <div class="bg-white">
                 <div class="py-3 px-4 flex flex-row justify-between">
                     <h1 class="h6">
-                        <span class="num-4"></span>k
-                        <p>page view</p>
+                        Overburden
+                        <p>bcm</p>
                     </h1>
 
                     <div class="bg-teal-200 text-teal-700 border-teal-300 border w-10 h-10 rounded-full flex justify-center items-center">
                         <i class="fad fa-eye"></i>
                     </div>
                 </div>
-                <div class="analytics_1"></div>
+                <div class="">
+                    <div class="chart-container">
+                        <div class="pie-chart-container">
+                            <canvas id="overburden"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="bg-white">
                 <div class="py-3 px-4 flex flex-row justify-between">
                     <h1 class="h6">
-                        <span class="num-2"></span>k
-                        <p>Unique Users</p>
+                        Coal
+                        <p>Mt</p>
                     </h1>
 
                     <div class="bg-indigo-200 text-indigo-700 border-indigo-300 border w-10 h-10 rounded-full flex justify-center items-center">
                         <i class="fad fa-users-crown"></i>
                     </div>
                 </div>
-                <div class="analytics_1"></div>
+                <div class="">
+                    <div class="chart-container">
+                        <div class="pie-chart-container">
+                            <canvas id="coal"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -46,30 +59,49 @@
     <!-- end charts -->
 
     <!-- Table -->
-    <!-- With avatar -->
-    <h4 class="mt-6 mb-2 text-base font-semibold dark:text-gray-300">
-        Table with avatars
-    </h4>
-    <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
+    <div class="w-full my-5 overflow-hidden rounded-lg shadow-xs">
         <div class="w-full overflow-x-auto">
-            <table class="w-full whitespace-no-wrap">
-                <thead>
-                    <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                        @for($i=0; $i<30; $i++)
-                            <th class="px-4 py-3">{{$i+1}}</th>
-                        @endfor
+            <table class="w-full ">
+                <thead class="bg-black sticky top-0 z-20">
+                    <tr class="text-xs font-semibold tracking-wide text-center text-white uppercase">
+                        <th rowspan="2" class="px-4 py-3 border">Tanggal</th>
+                        <th colspan="2" class="px-4 py-3 border">Overburden</th>
+                        <th colspan="2" class="px-4 py-3 border">Coal</th>
+                        <th rowspan="2" class="px-4 py-3 border w-[10rem]">Aksi</th>
+                    </tr>
+                    <tr class="text-xs font-semibold tracking-wide text-center text-white uppercase">
+                        <th class="px-4 py-3 border">Plan</th>
+                        <th class="px-4 py-3 border">ACT</th>
+                        <th class="px-4 py-3 border">Plan</th>
+                        <th class="px-4 py-3 border">ACT</th>
                     </tr>
                 </thead>
-                <tbody class="text-gray-700 dark:text-gray-400">
-                    <tr class="text-gray-700 dark:text-gray-400">
-                        <th class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+                    @foreach($data as $dt)
+                        <tr class="text-gray-700 dark:text-gray-400">
+                            <td class="px-4 py-3 text-center">
+                            </td>
                             
-                        </th>
-                    </tr>
+                            <td class="px-4 py-3 text-center">
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                            </td>
+                            
+                            <td class="px-4 py-3 text-center">
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                                <a href="#" class="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-yellow-400 rounded-md active:bg-yellow-600 hover:bg-yellow-900 sm:mr-1 cursor-pointer">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
-        <div class="flex justify-between px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+        <div class="flex justify-between items-center px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
             <span class="flex items-center col-span-3">
                 Showing 21-30 of 100
             </span>
@@ -130,7 +162,111 @@
             </span>
         </div>
     </div>
-
-
 </div>
+<script>
+    $(function() {
+        // OVERBURDEN
+        //get the OB data
+        var ob_prod = JSON.parse(`<?php echo $data_prod_ob['chart_data_prod_ob']; ?>`);
+        var ob_plan = JSON.parse(`<?php echo $data_plan_ob['chart_data_plan_ob']; ?>`);
+        var ctx = $("#overburden");
+
+        //Multi Chart
+        var data = {
+            labels: ob_prod.label,
+            datasets: [{
+                type: 'bar',
+                label: 'Actual',
+                data: ob_prod.data,
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)'
+            }, {
+                type: 'line',
+                label: 'Plan',
+                data: ob_plan.data,
+                fill: false,
+                borderColor: 'rgb(54, 162, 235)'
+            }]
+        };
+
+        //options
+        var options = {
+            responsive: true,
+            title: {
+                display: true,
+                position: "top",
+                text: "",
+                fontSize: 18,
+                fontColor: "#111"
+            },
+            legend: {
+                display: true,
+                position: "bottom",
+                labels: {
+                    fontColor: "#333",
+                    fontSize: 16
+                }
+            }
+        };
+
+        //   Create Mixed Chart
+        var chart1 = new Chart(ctx, {
+            type: "bar",
+            data: data,
+            options: options
+        });
+
+        // Coal
+        //get the Coal data
+        var coal_prod = JSON.parse(`<?php echo $data_prod_coal['chart_data_prod_coal']; ?>`);
+        var coal_plan = JSON.parse(`<?php echo $data_plan_coal['chart_data_plan_coal']; ?>`);
+        var ctx = $("#coal");
+
+        //Multi Chart
+        var data = {
+            labels: coal_prod.label,
+            datasets: [{
+                type: 'bar',
+                label: 'Actual',
+                data: coal_prod.data,
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)'
+            }, {
+                type: 'line',
+                label: 'Plan',
+                data: coal_plan.data,
+                fill: false,
+                borderColor: 'rgb(54, 162, 235)'
+            }]
+        };
+
+        //options
+        var options = {
+            responsive: true,
+            title: {
+                display: true,
+                position: "top",
+                text: "",
+                fontSize: 18,
+                fontColor: "#111"
+            },
+            legend: {
+                display: true,
+                position: "bottom",
+                labels: {
+                    fontColor: "#333",
+                    fontSize: 16
+                }
+            }
+        };
+
+        //   Create Mixed Chart
+        var chart2 = new Chart(ctx, {
+            type: "bar",
+            data: data,
+            options: options
+        });
+
+    });
+</script>
 @endsection

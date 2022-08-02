@@ -102,38 +102,98 @@ class DashboardController extends Controller
             ->get();
 
 
-        // Data Detail OB & Coal Per Site
-        $totalOBHarian = DB::table('pma_dailyprod_tc')
-            ->select(DB::raw('SUM(ob) totalOb, SUM(coal) totalCoal'))
-            ->whereDate('tgl', '=', DB::raw('SUBDATE(CURDATE(), 1)'))
-            ->where('kodesite', '=', 'I')
-            ->get();
-
-
         $subquery = "SELECT A.tgl, SUM(A.ob)ob_act,SUM(A.coal)coal_act,SUM(B.ob)ob_plan,SUM(B.coal)coal_plan,
-        ((SUM(A.ob)/SUM(B.ob))*100)ob_ach,((SUM(A.coal)/SUM(B.coal))*100)coal_ach
+        ((SUM(A.ob)/SUM(B.ob))*100)ob_ach,((SUM(A.coal)/SUM(B.coal))*100)coal_ach, C.kodesite, C.namasite, C.gambar
         FROM pma_dailyprod_tc A
-        JOIN (SELECT * FROM pma_dailyprod_plan WHERE tgl='2022-07-31' AND kodesite='I' GROUP BY tgl) B 
+        JOIN (SELECT * FROM pma_dailyprod_plan WHERE tgl=CURDATE()-1 GROUP BY tgl, kodesite) B 
         ON A.tgl = B.tgl
-        WHERE A.tgl='2022-07-31' AND A.kodesite='I'
-        GROUP BY A.tgl";
+        JOIN site C
+        ON A.kodesite = C.kodesite
+        WHERE A.TGL=CURDATE()-1
+        GROUP BY A.tgl, A.kodesite
+        ORDER BY C.id";
 
-        $persenTotalObHarian = collect(DB::select($subquery));
-        
-        $site = DB::table('site')
-        ->select()
-        ->where('status_website', '=', 1)
-        ->orderBy('id')
-        ->get();
-        // dd($site);
-
-        return view('dashboard.index', compact('data_detail_OB_prod', 'data_detail_OB_plan', 'data_prod_ob', 'data_plan_ob', 'data_detail_coal_prod', 'data_detail_coal_plan', 'data_prod_coal', 'data_plan_coal', 'totalOBHarian', 'persenTotalObHarian', 'site'));
+        $data = collect(DB::select($subquery));
+        return view('dashboard.index', compact('data_detail_OB_prod', 'data_detail_OB_plan', 'data_prod_ob', 'data_plan_ob', 'data_detail_coal_prod', 'data_detail_coal_plan', 'data_prod_coal', 'data_plan_coal', 'data'));
         // $data_prod, $data_plan
     }
 
     public function show($site)
     {
-        
-        return view('dashboard.show');
+        $bulan = Carbon::now();
+        $tanggal =  "TGL BETWEEN '" . $bulan->startOfMonth()->copy() . "' AND '" . $bulan->endOfMonth()->copy() . "'";
+        $tanggalKedua =  "A.TGL BETWEEN '" . $bulan->startOfMonth()->copy() . "' AND '" . $bulan->endOfMonth()->copy() . "'";
+
+        /**
+         * Overburden
+         */
+
+        $subquery = "SELECT RIGHT(A.tgl, 2) tgl, SUM(A.OB) ob_act, SUM(B.OB) ob_plan
+        FROM pma_dailyprod_tc A
+        JOIN (SELECT * FROM pma_dailyprod_plan WHERE ".$tanggal." AND kodesite = '".$site."' GROUP BY tgl ORDER BY tgl) B
+        ON A.tgl = B.tgl
+        WHERE ".$tanggalKedua."
+        AND A.kodesite = '".$site."'
+        GROUP BY A.tgl
+        ORDER BY A.tgl";
+
+        $record_ob = collect(DB::select($subquery));
+
+        $data_prod_ob = [];
+        $data_plan_ob = [];
+
+        foreach ($record_ob as $row) {
+            $data_prod_ob['label'][] = (int) $row->tgl;
+            $data_prod_ob['data'][] = $row->ob_act;
+            $data_plan_ob['label'][] = (int) $row->tgl;
+            $data_plan_ob['data'][] = $row->ob_plan;
+        }
+
+        $data_prod_ob['chart_data_prod_ob'] = json_encode($data_prod_ob);
+        $data_plan_ob['chart_data_plan_ob'] = json_encode($data_plan_ob);
+
+        /**
+         * Coal Data
+         */
+        $subquery = "SELECT RIGHT(A.tgl, 2) tgl, SUM(A.coal) coal_act, SUM(B.coal) coal_plan
+        FROM pma_dailyprod_tc A
+        JOIN (SELECT * FROM pma_dailyprod_plan WHERE ".$tanggal." AND kodesite = '".$site."' GROUP BY tgl) B
+        ON A.tgl = B.tgl
+        WHERE ".$tanggalKedua."
+        AND A.kodesite = '".$site."'
+        GROUP BY A.tgl
+        ORDER BY A.tgl";
+
+        $record_coal = collect(DB::select($subquery));
+
+        $data_prod_coal = [];
+        $data_plan_coal = [];
+
+        foreach ($record_coal as $row) {
+            $data_prod_coal['label'][] = (int) $row->tgl;
+            $data_prod_coal['data'][] = $row->coal_act;
+            $data_plan_coal['label'][] = (int) $row->tgl;
+            $data_plan_coal['data'][] = $row->coal_plan;
+        }
+
+        $data_prod_coal['chart_data_prod_coal'] = json_encode($data_prod_coal);
+        $data_plan_coal['chart_data_plan_coal'] = json_encode($data_plan_coal);
+
+        /**
+         * Data Bulanan
+         */
+        $subquery = "SELECT A.tgl, A.pit, A.ob ob_act, A.coal coal_act, B.ob ob_plan, B.coal coal_plan,
+        ((A.ob / B.ob)*100) ob_ach,((A.coal/B.coal)*100) coal_ach, C.kodesite, C.namasite
+        FROM pma_dailyprod_tc A
+        JOIN (SELECT * FROM pma_dailyprod_plan WHERE tgl BETWEEN '2022-07-01' AND '2022-07-31' AND kodesite='I' GROUP BY tgl ORDER BY tgl) B 
+        ON A.tgl = B.tgl
+        JOIN site C
+        ON A.kodesite = C.kodesite
+        WHERE A.tgl BETWEEN '2022-07-01' AND '2022-07-31' AND A.kodesite='I'
+        GROUP BY A.tgl, A.pit
+        ORDER BY A.tgl";
+
+        $data = collect(DB::select($subquery));
+        return view('dashboard.show', compact('data','data_prod_ob','data_plan_ob','data_prod_coal','data_plan_coal'));
     }
 }
