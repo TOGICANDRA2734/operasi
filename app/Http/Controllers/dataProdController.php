@@ -6,6 +6,7 @@ use App\Models\dataProd;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class dataProdController extends Controller
 {
@@ -24,7 +25,7 @@ class dataProdController extends Controller
         // ->get();
 
         $subquery = "SELECT 
-        A.id,
+        IFNULL(B.id,0) id,
         A.TGL,
         A.ob OB_PLAN ,
         A.coal COAL_PLAN,
@@ -75,11 +76,12 @@ class dataProdController extends Controller
         ]);
 
         $record = dataProd::create([
-            'tgl'           => Carbon::now(),
+            'tgl'           => $request->tgl,
             'pit'           => $request->pit,
             'ob'            => $request->ob,
             'coal'          => $request->coal,
             'kodesite'      => $request->kodesite,
+            'status'        => 1,
         ]);
 
         if($record){
@@ -118,10 +120,9 @@ class dataProdController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, $other)
+    public function edit($id)
     {
-        dd($id, $other);
-
+        $data = DB::table('pma_dailyprod_tc')->select()->where('id', '=', $id)->get();
         $site = DB::table('site')
         ->select()
         ->where('status_website', '=', 1)
@@ -129,21 +130,16 @@ class dataProdController extends Controller
         ->orderBy('id')
         ->get();
         
-        return view('data-prod.edit', compact('site'));
+        return view('data-prod.edit', compact('site', 'data'));
     }
 
     public function edit_data($id, $other)
-    {
-        dd($id, $other);
-
-        $site = DB::table('site')
-        ->select()
-        ->where('status_website', '=', 1)
-        ->where('status', '=', 1)
-        ->orderBy('id')
-        ->get();
-        
-        return view('data-prod.edit', compact('site'));
+    {   
+        if($other == 1){
+            return Redirect::route('data-prod.edit', $id);            
+        } else {
+            return Redirect::route('data-prod.create');
+        }
     }
 
     /**
@@ -155,7 +151,29 @@ class dataProdController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'pit' => 'required',
+            'ob' => 'required',
+            'coal' => 'required',
+            'kodesite' => 'required',
+        ]);
+
+        $record = dataProd::findOrFail($id);
+
+        $record->update([
+            'tgl'           => $request->tgl,
+            'pit'           => $request->pit,
+            'ob'            => $request->ob,
+            'coal'          => $request->coal,
+            'kodesite'      => $request->kodesite,
+        ]);
+
+        if($record){
+            return redirect()->route('data-prod.index')->with(['success' => 'Data Berhasil Diupdate!']);
+        }
+        else{
+            return redirect()->route('data-prod.index')->with(['error' => 'Data Gagal Diupdate!']);
+        }
     }
 
     /**

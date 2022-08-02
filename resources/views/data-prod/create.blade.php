@@ -15,37 +15,88 @@
             <!-- Start Form -->
             <form action="{{route('data-prod.store')}}" method="POST" id="storeDok" class="px-4 py-3 mb-8 grid grid-cols-2 gap-5 bg-white rounded-lg  dark:bg-gray-800">
                 @csrf
-                <label class="block mt-1 text-sm">
-                    <span class="font-semibold text-gray-700 dark:text-gray-400">Site</span>
-                    <select class="block shadow-sm border p-2 rounded-md w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-stone-400 focus:outline-none focus:shadow-outline-stone dark:focus:shadow-outline-gray" name="kodesite" id="kodesite">
-                        <option  value="">Pilih</option>
-                        @foreach($site as $st)
-                        <option value="{{$st->kodesite}}">{{$st->namasite}} - {{$st->lokasi}}</option>
-                        @endforeach
-                    </select>
-                </label>
+                <div>
+                    <label class="block mt-1 text-sm">
+                        <span class="font-semibold text-gray-700 dark:text-gray-400">
+                            Tanggal <span class="text-xs text-gray-500">(Month-Day-Year)</span>
+                        </span>
+                        <input class="block shadow-sm border p-2 rounded-md w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-stone-400 focus:outline-none focus:shadow-outline-stone dark:focus:shadow-outline-gray" type="date" name="tgl" id="tgl">
+                    </label>
+                    @error('tgl')
+                    <div class="w-full bg-red-200 shadow-sm rounded-md overflow-hidden mt-2">
+                        <div class="px-4 py-2">
+                            <p class="text-gray-600 text-sm">{{ $message }}</p>
+                        </div>
+                    </div>
+                    @enderror
+                </div>
 
-                <label class="block mt-1 text-sm">
-                    <span class="font-semibold text-gray-700 dark:text-gray-400">Pit</span>
-                    <select class="block shadow-sm border p-2 rounded-md w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-stone-400 focus:outline-none focus:shadow-outline-stone dark:focus:shadow-outline-gray" name="pit" id="pit">
-                        <option disabled value="">Pilih</option>
-                    </select>
-                </label>
+                <div>
+                    <label class="block mt-1 text-sm">
+                        <span class="font-semibold text-gray-700 dark:text-gray-400">Site</span>
+                        <select class="block shadow-sm border p-2 rounded-md w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-stone-400 focus:outline-none focus:shadow-outline-stone dark:focus:shadow-outline-gray" name="kodesite" id="kodesite">
+                            <option value="">Pilih</option>
+                            @foreach($site as $st)
+                            <option value="{{$st->kodesite}}">{{$st->namasite}} - {{$st->lokasi}}</option>
+                            @endforeach
+                        </select>
+                    </label>
+                    @error('kodesite')
+                    <div class="w-full bg-red-200 shadow-sm rounded-md overflow-hidden mt-2">
+                        <div class="px-4 py-2">
+                            <p class="text-gray-600 text-sm">{{ $message }}</p>
+                        </div>
+                    </div>
+                    @enderror
+                </div>
+                
+                <div class="col-span-2">
+                    <label class="block mt-1 text-sm">
+                        <span class="font-semibold text-gray-700 dark:text-gray-400">Pit</span>
+                        <select class="block shadow-sm border p-2 rounded-md w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-stone-400 focus:outline-none focus:shadow-outline-stone dark:focus:shadow-outline-gray" name="pit" id="pit">
+                            <option value="">Select</option>
+                        </select>
+                    </label>
+                    @error('pit')
+                    <div class="w-full bg-red-200 shadow-sm rounded-md overflow-hidden mt-2">
+                        <div class="px-4 py-2">
+                            <p class="text-gray-600 text-sm">{{ $message }}</p>
+                        </div>
+                    </div>
+                    @enderror
+                </div>
 
-                <label class="block mt-1 text-sm">
-                    <span class="font-semibold text-gray-700 dark:text-gray-400">
-                        Overburden (bcm)
-                    </span>
-                    <input class="block shadow-sm border p-2 rounded-md w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-stone-400 focus:outline-none focus:shadow-outline-stone dark:focus:shadow-outline-gray" type="number" name="ob" id="ob">
-                </label>
+                <div>
+                    <label class="block mt-1 text-sm">
+                        <span class="font-semibold text-gray-700 dark:text-gray-400">
+                            Overburden <span class="text-xs text-gray-500">(bcm)</span>
+                        </span>
+                        <input class="block shadow-sm border p-2 rounded-md w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-stone-400 focus:outline-none focus:shadow-outline-stone dark:focus:shadow-outline-gray" type="number" name="ob" id="ob">
+                    </label>
+                    @error('ob')
+                    <div class="w-full bg-red-200 shadow-sm rounded-md overflow-hidden mt-2">
+                        <div class="px-4 py-2">
+                            <p class="text-gray-600 text-sm">{{ $message }}</p>
+                        </div>
+                    </div>
+                    @enderror
+                </div>
 
-
-                <label class="block mt-1 text-sm">
-                    <span class="font-semibold text-gray-700 dark:text-gray-400">
-                        Coal (mt)
-                    </span>
-                    <input class="block shadow-sm border p-2 rounded-md w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-stone-400 focus:outline-none focus:shadow-outline-stone dark:focus:shadow-outline-gray" type="number" name="coal" id="coal">
-                </label>
+                <div>
+                    <label class="block mt-1 text-sm">
+                        <span class="font-semibold text-gray-700 dark:text-gray-400">
+                            Coal <span class="text-xs text-gray-500">(mt)</span>
+                        </span>
+                        <input class="block shadow-sm border p-2 rounded-md w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-stone-400 focus:outline-none focus:shadow-outline-stone dark:focus:shadow-outline-gray" type="number" name="coal" id="coal">
+                    </label>
+                    @error('coal')
+                    <div class="w-full bg-red-200 shadow-sm rounded-md overflow-hidden mt-2">
+                        <div class="px-4 py-2">
+                            <p class="text-gray-600 text-sm">{{ $message }}</p>
+                        </div>
+                    </div>
+                    @enderror
+                </div>
 
                 <button class="col-span-2 px-10 py-4 font-medium leading-5 text-white transition-colors duration-150 bg-black border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-800 focus:outline-none focus:shadow-outline-black">
                     Submit
