@@ -127,7 +127,13 @@ class DashboardController extends Controller
         ->get();
         // dd($site);
 
-        return view('dashboard', compact('data_detail_OB_prod', 'data_detail_OB_plan', 'data_prod_ob', 'data_plan_ob', 'data_detail_coal_prod', 'data_detail_coal_plan', 'data_prod_coal', 'data_plan_coal', 'totalOBHarian', 'persenTotalObHarian', 'site'));
+        return view('dashboard.index', compact('data_detail_OB_prod', 'data_detail_OB_plan', 'data_prod_ob', 'data_plan_ob', 'data_detail_coal_prod', 'data_detail_coal_plan', 'data_prod_coal', 'data_plan_coal', 'totalOBHarian', 'persenTotalObHarian', 'site'));
         // $data_prod, $data_plan
+    }
+
+    public function show($site)
+    {
+        
+        return view('dashboard.show');
     }
 }

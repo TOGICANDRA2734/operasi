@@ -13,7 +13,7 @@
         <!-- card -->
         <div class="report-card relative">
             <img class="w-20 h-auto absolute right-0 rounded-full z-10" src="{{asset('icon/mendung.GIF')}}" style="right: -2rem; top: -1.5rem;" alt="Asset">
-            <a href="">
+            <a href="{{route('dashboard.show', $st->kodesite)}}">
                 <div class="card border-red-100 ">
                     <div class="card-body flex flex-col border ">
                         <!-- top -->
