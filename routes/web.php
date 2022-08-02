@@ -1,10 +1,8 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\dataProdController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ChartJsController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PmaDailyTcController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +15,21 @@ use App\Http\Controllers\PmaDailyTcController;
 |
 */
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard.index');
+})->middleware(['auth'])->name('dashboard');
+
+Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+
 
 Route::resource('data-prod', dataProdController::class);
 Route::get('data-prod/create/{id}', [dataProdController::class, 'create_data'])->name('tc_create_data.index');
 Route::get('data-prod/{id}/{other}', [dataProdController::class, 'edit_data'])->name('edit_data_other.index');
 Route::post('detail-pit', [dataProdController::class, 'getPit'])->name('data-prod.getPit');
 Route::get('dashboard/detail/{site}', [DashboardController::class, 'show'])->name('dashboard.show');
+
+require __DIR__.'/auth.php';
