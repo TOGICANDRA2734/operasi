@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\dataProd;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
@@ -23,24 +24,32 @@ class dataProdController extends Controller
         // ->where('pma_dailyprod_tc.kodesite', '=', 'I')
         // ->groupBy('pma_dailyprod_tc.tgl')
         // ->get();
+        
+        $statusSite = Auth::user()->kodesite; 
 
         $subquery = "SELECT 
         IFNULL(B.id,0) id,
         A.TGL,
+        C.namasite,
         A.ob OB_PLAN ,
         A.coal COAL_PLAN,
         IFNULL(B.ob,0) OB_ACTUAL,
         IFNULL(B.coal,0) COAL_ACTUAL,
-        IFNULL(STATUS,0) STATUS
+        IFNULL(B.status,0) status
         FROM pma_dailyprod_PLAN A
-        LEFT JOIN (SELECT * FROM pma_dailyprod_TC WHERE tgl BETWEEN '2022-07-01' AND '2022-07-31' AND kodesite='T') B
+        LEFT JOIN (SELECT * FROM pma_dailyprod_TC WHERE tgl BETWEEN '2022-07-01' AND '2022-07-31' AND kodesite='".$statusSite."' GROUP BY tgl ORDER BY tgl) B
         ON A.tgl = B.tgl
-        WHERE A.tgl BETWEEN '2022-07-01' AND '2022-07-31' AND A.kodesite='T'
+        LEFT JOIN site C
+        ON B.kodesite=C.kodesite
+        WHERE A.tgl BETWEEN '2022-07-01' AND '2022-07-31' AND A.kodesite='".$statusSite."'
+        GROUP BY a.tgl
         ORDER BY a.tgl";
 
         $data = collect(DB::select($subquery));
 
-        return view('data-prod.index', compact('data'));
+        $site = DB::table('site')->select('namasite')->where('kodesite', '=', Auth::user()->kodesite)->get();
+
+        return view('data-prod.index', compact('data', 'site'));
     }
 
     /**
@@ -58,6 +67,20 @@ class dataProdController extends Controller
         ->get();
         
         return view('data-prod.create', compact('site'));
+    }
+
+    public function create_data($tgl)
+    {
+        $site = DB::table('site')
+        ->select()
+        ->where('status_website', '=', 1)
+        ->where('status', '=', 1)
+        ->where('kodesite', '=', Auth::user()->kodesite)
+        ->orderBy('id')
+        ->get();
+
+        $tgl = $tgl;
+        return view('data-prod.create', compact('site', 'tgl'));
     }
 
     /**
@@ -81,7 +104,7 @@ class dataProdController extends Controller
             'ob'            => $request->ob,
             'coal'          => $request->coal,
             'kodesite'      => $request->kodesite,
-            'status'        => 1,
+            'status'           => 0,
         ]);
 
         if($record){
@@ -127,18 +150,19 @@ class dataProdController extends Controller
         ->select()
         ->where('status_website', '=', 1)
         ->where('status', '=', 1)
+        ->where('kodesite', '=', Auth::user()->kodesite)
         ->orderBy('id')
         ->get();
         
         return view('data-prod.edit', compact('site', 'data'));
     }
 
-    public function edit_data($id, $other)
+    public function edit_data($id, $tgl, $other)
     {   
         if($other == 1){
             return Redirect::route('data-prod.edit', $id);            
         } else {
-            return Redirect::route('data-prod.create');
+            return Redirect::route('create_data.index', $tgl);
         }
     }
 
@@ -207,5 +231,23 @@ class dataProdController extends Controller
             return response()->json(['status' => 'failed', 'message' => 'No frameworks found'], 404);
         }
         return response()->json(['status' => 'failed', 'message' => 'Please select language'], 500);
+    }
+
+    public function report()
+    {
+        $subquery = "SELECT A.TGL,
+        SUM(A.ob) OB_PLAN ,
+        SUM(A.coal) COAL_PLAN,
+        SUM(IFNULL(B.ob,0)) OB_ACTUAL,
+        SUM(IFNULL(B.coal,0)) COAL_ACTUAL
+        FROM pma_dailyprod_PLAN A
+        LEFT JOIN (SELECT * FROM pma_dailyprod_TC WHERE tgl BETWEEN '2022-07-01' AND '2022-07-31' GROUP BY tgl) B
+        ON A.tgl = B.tgl
+        WHERE A.tgl BETWEEN '2022-07-01' AND '2022-07-31'
+        GROUP BY A.tgl";
+
+        $data = collect(DB::select($subquery));
+
+        return view('data-prod.report', compact('data'));
     }
 }

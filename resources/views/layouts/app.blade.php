@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="./img/fav.png" type="image/x-icon">
     <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v5.12.1/css/pro.min.css">
-    
+
     <!-- Style Chart -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
     <!-- end Style Chart -->
-    
+
     <link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('css/custom.css')}}">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
@@ -28,7 +28,7 @@
 
         <!-- logo -->
         <div class="flex-none w-56 flex flex-row items-center">
-            <strong class="capitalize ml-1 flex-1">Operation</strong>
+            <a href="{{route('dashboard')}}" class="capitalize ml-1 flex-1"><strong>Operation</strong></a>
 
             <button id="sliderBtn" class="flex-none text-right text-gray-900 hidden md:block">
                 <i class="fad fa-list-ul"></i>
@@ -44,7 +44,7 @@
 
         <!-- navbar content -->
         <div id="navbar" class="animated md:hidden md:fixed  md:top-0 md:w-full md:left-0 md:mt-16 md:border-t md:border-b md:border-gray-200 md:p-10 md:bg-white flex-1 pl-3 flex flex-row flex-wrap justify-end items-center md:flex-col md:items-center">
-            
+
 
             <!-- right -->
             <div class="flex flex-row-reverse items-center">
@@ -53,7 +53,7 @@
                 <div class="dropdown relative md:static">
 
                     <button class="menu-btn focus:outline-none focus:shadow-outline flex flex-wrap items-center">
-                        
+
 
                         <div class="ml-2 capitalize flex ">
                             <h1 class="text-sm text-gray-800 font-semibold m-0 p-0 leading-none">{{Auth::user()->name}}</h1>
@@ -148,48 +148,11 @@
 
 
                 <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">Reports</p>
-
                 <!-- link -->
-                <a href="./email.html" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-                    <i class="fad fa-envelope-open-text text-xs mr-2"></i>
-                    email
+                <a href="{{route('data-prod.report')}}" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+                    <i class="fad fa-chart-bar text-xs mr-2"></i>
+                    Produksi Actual Site
                 </a>
-                <!-- end link -->
-
-                <!-- link -->
-                <a href="#" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-                    <i class="fad fa-comments text-xs mr-2"></i>
-                    chat
-                </a>
-                <!-- end link -->
-
-                <!-- link -->
-                <a href="#" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-                    <i class="fad fa-shield-check text-xs mr-2"></i>
-                    todo
-                </a>
-                <!-- end link -->
-
-                <!-- link -->
-                <a href="#" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-                    <i class="fad fa-calendar-edit text-xs mr-2"></i>
-                    calendar
-                </a>
-                <!-- end link -->
-
-                <!-- link -->
-                <a href="#" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-                    <i class="fad fa-file-invoice-dollar text-xs mr-2"></i>
-                    invoice
-                </a>
-                <!-- end link -->
-
-                <!-- link -->
-                <a href="#" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-                    <i class="fad fa-folder-open text-xs mr-2"></i>
-                    file manager
-                </a>
-                <!-- end link -->
 
 
             </div>
@@ -197,9 +160,9 @@
 
         </div>
         <!-- end sidbar -->
-        
+
         <!-- Start Content  -->
-            @yield('content')
+        @yield('content')
         <!-- End content -->
 
     </div>

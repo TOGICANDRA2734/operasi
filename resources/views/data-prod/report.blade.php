@@ -4,7 +4,7 @@
 <div class="bg-gray-100 flex-1 p-6 md:mt-16 overflow-hidden">
     <!-- Title -->
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-        Produksi Actual - {{$site[0]->namasite}}
+        Laporan Produksi Actual
     </h2>
     <hr class="mb-10">
 
@@ -17,7 +17,6 @@
                         <th rowspan="2" class="px-4 py-3 border">Tanggal</th>
                         <th colspan="2" class="px-4 py-3 border">Overburden</th>
                         <th colspan="2" class="px-4 py-3 border">Coal</th>
-                        <th rowspan="2" class="px-4 py-3 border w-[10rem]">Aksi</th>
                     </tr>
                     <tr class="text-xs font-semibold tracking-wide text-center text-white uppercase">
                         <th class="px-4 py-3 border">Plan</th>
@@ -34,22 +33,17 @@
                             </td>
                             
                             <td class="px-4 py-3 text-center">
-                                {{$dt->OB_PLAN}}
+                                {{number_format($dt->OB_PLAN)}}
                             </td>
                             <td class="px-4 py-3 text-center">
-                                {{$dt->OB_ACTUAL}}
+                                {{number_format($dt->OB_ACTUAL)}}
                             </td>
                             
                             <td class="px-4 py-3 text-center">
-                                {{$dt->COAL_PLAN}}
+                                {{number_format($dt->COAL_PLAN)}}
                             </td>
                             <td class="px-4 py-3 text-center">
-                                {{$dt->COAL_ACTUAL}}
-                            </td>
-                            <td class="px-4 py-3 text-center">
-                                <a href="{{route('edit_data_other.index', [$dt->id, $dt->TGL, $dt->status] )}}" class="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-yellow-400 rounded-md active:bg-yellow-600 hover:bg-yellow-900 sm:mr-1 cursor-pointer">
-                                    <i class="fa-solid fa-pencil"></i>
-                                </a>
+                                {{number_format($dt->COAL_ACTUAL)}}
                             </td>
                         </tr>
                     @endforeach

@@ -20,7 +20,7 @@
                         <span class="font-semibold text-gray-700 dark:text-gray-400">
                             Tanggal <span class="text-xs text-gray-500">(Month-Day-Year)</span>
                         </span>
-                        <input class="block shadow-sm border p-2 rounded-md w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-stone-400 focus:outline-none focus:shadow-outline-stone dark:focus:shadow-outline-gray" type="date" name="tgl" id="tgl">
+                        <input value="{{$tgl}}" class="block shadow-sm border p-2 rounded-md w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-stone-400 focus:outline-none focus:shadow-outline-stone dark:focus:shadow-outline-gray" type="date" name="tgl" id="tgl">
                     </label>
                     @error('tgl')
                     <div class="w-full bg-red-200 shadow-sm rounded-md overflow-hidden mt-2">
