@@ -102,13 +102,15 @@ class DashboardController extends Controller
             ->get();
 
 
-        $subquery = "SELECT A.tgl, SUM(A.ob)ob_act,SUM(A.coal)coal_act,SUM(B.ob)ob_plan,SUM(B.coal)coal_plan,
+        $subquery = "SELECT A.tgl, D.icon_cuaca icon, SUM(A.ob)ob_act,SUM(A.coal)coal_act,SUM(B.ob)ob_plan,SUM(B.coal)coal_plan,
         ((SUM(A.ob)/SUM(B.ob))*100)ob_ach,((SUM(A.coal)/SUM(B.coal))*100)coal_ach, C.kodesite, C.namasite, C.gambar
         FROM pma_dailyprod_tc A
         JOIN (SELECT * FROM pma_dailyprod_plan WHERE tgl=CURDATE()-1 GROUP BY tgl, kodesite) B 
         ON A.tgl = B.tgl
         JOIN site C
         ON A.kodesite = C.kodesite
+        JOIN pma_dailyprod_cuacaicon D
+        ON A.cuaca = D.kode_cuaca
         WHERE A.TGL=CURDATE()-1
         GROUP BY A.tgl, A.kodesite
         ORDER BY C.id";
@@ -138,7 +140,7 @@ class DashboardController extends Controller
         FROM pma_dailyprod_pty A 
         JOIN site B
         ON A.kodesite = B.kodesite                                         
-        WHERE tgl=CURDATE()-1 AND del=0
+        WHERE tgl=CURDATE() AND del=0
         GROUP BY a.kodesite, nom_unit,TYPE
         ORDER BY b.id, nom_unit";
 
@@ -228,6 +230,14 @@ class DashboardController extends Controller
         WHERE kodesite='".$site."'";
         $pit = collect(DB::select($subquery));
 
-        return view('dashboard.show', compact('data','data_prod_ob','data_plan_ob','data_prod_coal','data_plan_coal', 'pit'));
+        $subquery = "SELECT *
+        FROM pma_dailyprod_kendala
+        WHERE ".$tanggal." AND
+        kodesite='".$site."'";
+        $kendala = collect(DB::select($subquery));
+
+        // dd($kendala);
+
+        return view('dashboard.show', compact('data','data_prod_ob','data_plan_ob','data_prod_coal','data_plan_coal', 'pit', 'kendala'));
     }
 }

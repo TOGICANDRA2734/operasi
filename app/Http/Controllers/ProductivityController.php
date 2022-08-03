@@ -37,7 +37,7 @@ class ProductivityController extends Controller
         FROM pma_dailyprod_pty A 
         JOIN site B
         ON A.kodesite = B.kodesite                                         
-        WHERE tgl=CURDATE()-1 AND del=0
+        WHERE tgl=CURDATE() AND del=0
         GROUP BY a.kodesite, nom_unit,TYPE
         ORDER BY b.id, nom_unit";
 
