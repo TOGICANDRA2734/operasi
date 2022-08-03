@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\dataProdController;
+use App\Http\Controllers\ProductivityController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +26,7 @@ Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['aut
 
 
 Route::resource('data-prod', dataProdController::class);
+Route::resource('productivity', ProductivityController::class);
 Route::get('data-prod/create_data/{tgl}', [dataProdController::class, 'create_data'])->name('create_data.index');
 Route::get('data-prod/{id}/{tgl}/{other}', [dataProdController::class, 'edit_data'])->name('edit_data_other.index');
 Route::get('data-prod-report', [dataProdController::class, 'report'])->name('data-prod.report');

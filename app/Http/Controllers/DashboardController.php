@@ -114,7 +114,37 @@ class DashboardController extends Controller
         ORDER BY C.id";
 
         $data = collect(DB::select($subquery));
-        return view('dashboard.index', compact('data_detail_OB_prod', 'data_detail_OB_plan', 'data_prod_ob', 'data_plan_ob', 'data_detail_coal_prod', 'data_detail_coal_plan', 'data_prod_coal', 'data_plan_coal', 'data'));
+
+        // Data Detail PTY
+        $subquery = "SELECT                                                           
+        b.namasite,
+        nom_unit,
+        AVG(pty) avg_pty,                                                        
+        IFNULL(SUM(CASE WHEN jam = 7 THEN pty END),0) j1,                    
+        IFNULL(SUM(CASE WHEN jam = 8 THEN pty END),0) j2,                          
+        IFNULL(SUM(CASE WHEN jam = 9 THEN pty END),0) j3,                    
+        IFNULL(SUM(CASE WHEN jam = 10 THEN pty END),0) j4,                          
+        IFNULL(SUM(CASE WHEN jam = 11 THEN pty END),0) j5,                    
+        IFNULL(SUM(CASE WHEN jam = 12 THEN pty END),0) j6,                          
+        IFNULL(SUM(CASE WHEN jam = 13 THEN pty END),0) j7,                    
+        IFNULL(SUM(CASE WHEN jam = 14 THEN pty END),0) j8,                          
+        IFNULL(SUM(CASE WHEN jam = 15 THEN pty END),0) j9,                    
+        IFNULL(SUM(CASE WHEN jam = 16 THEN pty END),0) j10,                          
+        IFNULL(SUM(CASE WHEN jam = 17 THEN pty END),0) j11,                    
+        IFNULL(SUM(CASE WHEN jam = 18 THEN pty END),0) j12,                          
+        IFNULL(SUM(CASE WHEN jam = 19 THEN pty END),0) j13,                          
+        dist,
+        ket                    
+        FROM pma_dailyprod_pty A 
+        JOIN site B
+        ON A.kodesite = B.kodesite                                         
+        WHERE tgl=CURDATE()-1 AND del=0
+        GROUP BY a.kodesite, nom_unit,TYPE
+        ORDER BY b.id, nom_unit";
+
+        $dataPty = collect(DB::select($subquery));
+        
+        return view('dashboard.index', compact('data_detail_OB_prod', 'data_detail_OB_plan', 'data_prod_ob', 'data_plan_ob', 'data_detail_coal_prod', 'data_detail_coal_plan', 'data_prod_coal', 'data_plan_coal', 'data', 'dataPty'));
         // $data_prod, $data_plan
     }
 

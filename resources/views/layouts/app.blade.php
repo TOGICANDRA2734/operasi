@@ -146,12 +146,23 @@
                 </a>
                 <!-- end link -->
 
+                <!-- link -->
+                <a href="{{route('productivity.index')}}" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+                    <i class="fa-solid fa-pencil text-xs mr-2"></i>
+                    Transaksi Productivity
+                </a>
+                <!-- end link -->
 
                 <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">Reports</p>
                 <!-- link -->
                 <a href="{{route('data-prod.report')}}" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
                     <i class="fad fa-chart-bar text-xs mr-2"></i>
                     Produksi Actual Site
+                </a>
+
+                <a href="{{route('productivity.index')}}" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+                    <i class="fa-solid fa-eraser text-xs mr-2"></i>
+                    Productivity Site
                 </a>
 
 
