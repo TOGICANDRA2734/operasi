@@ -154,7 +154,7 @@
                 <!-- end link -->
 
                 <!-- link -->
-                <a href="{{route('productivity.index')}}" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+                <a href="{{route('kendala.index')}}" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
                     <i class="fa-solid fa-car-burst text-xs mr-2"></i>
                     Transaksi Kendala
                 </a>

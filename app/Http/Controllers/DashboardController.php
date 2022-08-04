@@ -225,11 +225,17 @@ class DashboardController extends Controller
         GROUP BY A.tgl";
         $data = collect(DB::select($subquery));
 
+        /**
+         * Pit
+         */
         $subquery = "SELECT DISTINCT ket
         FROM pma_dailyprod_pit
         WHERE kodesite='".$site."'";
         $pit = collect(DB::select($subquery));
 
+        /**
+         * Kendala
+         */
         $subquery = "SELECT *
         FROM pma_dailyprod_kendala
         WHERE ".$tanggal." AND

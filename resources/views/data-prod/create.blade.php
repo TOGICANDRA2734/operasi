@@ -98,6 +98,27 @@
                     @enderror
                 </div>
 
+                <div class="col-span-2">
+                    <label class="block mt-1 text-sm">
+                        <span class="font-semibold text-gray-700 dark:text-gray-400">
+                            Cuaca
+                        </span>
+                        <select class="block shadow-sm border p-2 rounded-md w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-stone-400 focus:outline-none focus:shadow-outline-stone dark:focus:shadow-outline-gray" name="cuaca" id="cuaca">
+                            <option disabled selected value="">Pilih</option>
+                            @foreach($cuaca as $cc)
+                                <option value="{{$cc->kode_cuaca}}">{{$cc->nama_cuaca}}</option>
+                            @endforeach
+                        </select>    
+                    </label>
+                    @error('cuaca')
+                    <div class="w-full bg-red-200 shadow-sm rounded-md overflow-hidden mt-2">
+                        <div class="px-4 py-2">
+                            <p class="text-gray-600 text-sm">{{ $message }}</p>
+                        </div>
+                    </div>
+                    @enderror
+                </div>
+
                 <button class="col-span-2 px-10 py-4 font-medium leading-5 text-white transition-colors duration-150 bg-black border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-800 focus:outline-none focus:shadow-outline-black">
                     Submit
                 </button>

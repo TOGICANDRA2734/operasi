@@ -80,7 +80,13 @@ class dataProdController extends Controller
         ->get();
 
         $tgl = $tgl;
-        return view('data-prod.create', compact('site', 'tgl'));
+
+        $cuaca = DB::table('pma_dailyprod_cuacaicon')
+        ->select()
+        ->where('del', '=', 0)
+        ->get(); 
+
+        return view('data-prod.create', compact('site', 'tgl', 'cuaca'));
     }
 
     /**
@@ -96,6 +102,7 @@ class dataProdController extends Controller
             'ob' => 'required',
             'coal' => 'required',
             'kodesite' => 'required',
+            'cuaca' => 'required',
         ]);
 
         $record = dataProd::create([
@@ -104,7 +111,8 @@ class dataProdController extends Controller
             'ob'            => $request->ob,
             'coal'          => $request->coal,
             'kodesite'      => $request->kodesite,
-            'status'           => 0,
+            'cuaca'         => $request->cuaca,
+            'status'        => 1,
         ]);
 
         if($record){
@@ -153,8 +161,12 @@ class dataProdController extends Controller
         ->where('kodesite', '=', Auth::user()->kodesite)
         ->orderBy('id')
         ->get();
-        
-        return view('data-prod.edit', compact('site', 'data'));
+        $cuaca = DB::table('pma_dailyprod_cuacaicon')
+        ->select()
+        ->where('del', '=', 0)
+        ->get(); 
+
+        return view('data-prod.edit', compact('site', 'data', 'cuaca'));
     }
 
     public function edit_data($id, $tgl, $other)
@@ -180,6 +192,7 @@ class dataProdController extends Controller
             'ob' => 'required',
             'coal' => 'required',
             'kodesite' => 'required',
+            'cuaca' => 'required',
         ]);
 
         $record = dataProd::findOrFail($id);
@@ -190,6 +203,7 @@ class dataProdController extends Controller
             'ob'            => $request->ob,
             'coal'          => $request->coal,
             'kodesite'      => $request->kodesite,
+            'cuaca'      => $request->cuaca,
         ]);
 
         if($record){
