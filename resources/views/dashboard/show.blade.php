@@ -61,7 +61,7 @@
         <select class="p-1 border border-gray-100 rounded-md w-full mr-2" name="pit" id="pit">
             <option value="" selected>Semua Pit</option>
             @foreach($pit as $pt)
-                <option value="{{$pt->ket}}">{{$pt->ket}}</option>
+            <option value="{{$pt->ket}}">{{$pt->ket}}</option>
             @endforeach
         </select>
         <button class="px-3 py-1 text-sm font-medium leading-5 bg-black text-white transition-colors duration-150 border border-transparent rounded-md active:bg-stone-600 hover:bg-stone-700 focus:outline-none focus:shadow-outline-purple">
@@ -158,7 +158,40 @@
         </div>
     </div>
     <!-- End Kendala -->
-
+    <hr>
+    <h4>Display Comments</h4>
+    @foreach($post as $p)
+        <div class="display-comment">
+            <strong>{{ $p->username }}</strong> <span>{{$p->waktu}}</span>
+            <p>{{ $p->body }}</p>
+            <a href="" id="reply"></a>
+            <form method="post" action="{{ route('reply.add') }}">
+                @csrf
+                <div class="form-group">
+                    <input type="text" name="comment_body" class="form-control" />
+                    <input type="hidden" name="post_id" value="$" />
+                    <input type="hidden" name="comment_id" value="$" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-warning" value="Reply" />
+                </div>
+            </form>
+        </div>
+    @endforeach
+    <hr>
+    <div class="my-3">
+        <h4 class="text-lg mb-3 font-bold">Tambah Komentar</h4>
+        <form method="post" action="{{route('comment.add')}}">
+            @csrf
+            <div class="form-group">
+                <input required type="text" name="comment_body" class="form-control" />
+                <input type="hidden" name="post_id" value="{{$data[0]->kodesite}}" />
+            </div>
+            <div class="form-group">
+                <input type="submit" class="p-3 rounded-md bg-black text-white" value="Tambah" />
+            </div>
+        </form>
+    </div>
 </div>
 
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\pma_dailyprod_posts;
+use App\Models\Post;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -214,7 +216,7 @@ class DashboardController extends Controller
         /**
          * Data Bulanan
          */
-        $subquery = "SELECT A.tgl tgl, SUM(A.OB) ob_act, SUM(B.OB) ob_plan, SUM(A.coal) coal_act, SUM(B.coal) coal_plan, C.namasite
+        $subquery = "SELECT A.tgl tgl, SUM(A.OB) ob_act, SUM(B.OB) ob_plan, SUM(A.coal) coal_act, SUM(B.coal) coal_plan, C.namasite, C.kodesite
         FROM pma_dailyprod_tc A
         JOIN (SELECT * FROM pma_dailyprod_plan WHERE ".$tanggal." AND kodesite = '".$site."' GROUP BY tgl) B
         ON A.tgl = B.tgl
@@ -242,8 +244,16 @@ class DashboardController extends Controller
         kodesite='".$site."'";
         $kendala = collect(DB::select($subquery));
 
-        // dd($kendala);
 
-        return view('dashboard.show', compact('data','data_prod_ob','data_plan_ob','data_prod_coal','data_plan_coal', 'pit', 'kendala'));
+        $subquery = "SELECT * 
+        FROM pma_dailyprod_posts a
+        JOIN pma_dailyprod_comment b
+        ON a.kodesite = b.kodesite
+        JOIN pma_dailyprod_users c
+        ON b.user_id= c.id
+        WHERE a.kodesite='".$site."'";
+        $post = collect(DB::select($subquery));
+        
+        return view('dashboard.show', compact('data','data_prod_ob','data_plan_ob','data_prod_coal','data_plan_coal', 'pit', 'kendala', 'post'));
     }
 }

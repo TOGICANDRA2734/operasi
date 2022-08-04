@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\dataProd;
 use Carbon\Carbon;
+use DateInterval;
+use DatePeriod;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +34,7 @@ class dataProdController extends Controller
         IFNULL(B.id,0) id,
         A.TGL,
         C.namasite,
-        A.ob OB_PLAN ,
+        A.ob OB_PLAN,
         A.coal COAL_PLAN,
         IFNULL(B.ob,0) OB_ACTUAL,
         IFNULL(B.coal,0) COAL_ACTUAL,
@@ -49,7 +52,15 @@ class dataProdController extends Controller
 
         $site = DB::table('site')->select('namasite')->where('kodesite', '=', Auth::user()->kodesite)->get();
 
-        return view('data-prod.index', compact('data', 'site'));
+        $begin = new DateTime(date('Y-m-01'));
+        $end = new DateTime(date('Y-m-t'));
+
+        $interval = DateInterval::createFromDateString('1 day');
+        $period = new DatePeriod($begin, $interval, $end);
+        dd($period);
+
+
+        return view('data-prod.index', compact('data', 'site', 'period'));
     }
 
     /**

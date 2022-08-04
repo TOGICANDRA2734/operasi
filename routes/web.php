@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\dataProdController;
 use App\Http\Controllers\KendalaController;
@@ -33,5 +34,9 @@ Route::get('data-prod/{id}/{tgl}/{other}', [dataProdController::class, 'edit_dat
 Route::get('data-prod-report', [dataProdController::class, 'report'])->name('data-prod.report');
 Route::post('detail-pit', [dataProdController::class, 'getPit'])->name('data-prod.getPit');
 Route::get('dashboard/detail/{site}', [DashboardController::class, 'show'])->name('dashboard.show');
+
+// Komentar
+Route::post('/comment/store', [CommentController::class, 'store'])->name('comment.add');
+Route::post('/reply/store', [CommentController::class, 'replyStore'])->name('reply.add');
 
 require __DIR__.'/auth.php';

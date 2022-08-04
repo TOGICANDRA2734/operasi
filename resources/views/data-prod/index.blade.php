@@ -20,36 +20,32 @@
                         <th rowspan="2" class="px-4 py-3 border w-[10rem]">Aksi</th>
                     </tr>
                     <tr class="text-xs font-semibold tracking-wide text-center text-white uppercase">
-                        <th class="px-4 py-3 border">Plan</th>
-                        <th class="px-4 py-3 border">ACT</th>
-                        <th class="px-4 py-3 border">Plan</th>
-                        <th class="px-4 py-3 border">ACT</th>
+                        <th class="px-4 py-3 border">Shift 1</th>
+                        <th class="px-4 py-3 border">Shift 2</th>
+                        <th class="px-4 py-3 border">Shift 1</th>
+                        <th class="px-4 py-3 border">Shift 2</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                    @foreach($data as $dt)
+                    
+
+                    @foreach($period as $dt)
                         <tr class="text-gray-700 dark:text-gray-400">
                             <td class="px-4 py-3 text-center">
-                                {{date('d-m-Y', strtotime($dt->TGL))}}
+                                {{}}
                             </td>
                             
                             <td class="px-4 py-3 text-center">
-                                {{$dt->OB_PLAN}}
                             </td>
                             <td class="px-4 py-3 text-center">
-                                {{$dt->OB_ACTUAL}}
                             </td>
                             
                             <td class="px-4 py-3 text-center">
-                                {{$dt->COAL_PLAN}}
                             </td>
                             <td class="px-4 py-3 text-center">
-                                {{$dt->COAL_ACTUAL}}
                             </td>
                             <td class="px-4 py-3 text-center">
-                                <a href="{{route('edit_data_other.index', [$dt->id, $dt->TGL, $dt->status] )}}" class="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-yellow-400 rounded-md active:bg-yellow-600 hover:bg-yellow-900 sm:mr-1 cursor-pointer">
-                                    <i class="fa-solid fa-pencil"></i>
-                                </a>
+                                
                             </td>
                         </tr>
                     @endforeach

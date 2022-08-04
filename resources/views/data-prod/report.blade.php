@@ -19,10 +19,10 @@
                         <th colspan="2" class="px-4 py-3 border">Coal</th>
                     </tr>
                     <tr class="text-xs font-semibold tracking-wide text-center text-white uppercase">
-                        <th class="px-4 py-3 border">Plan</th>
-                        <th class="px-4 py-3 border">ACT</th>
-                        <th class="px-4 py-3 border">Plan</th>
-                        <th class="px-4 py-3 border">ACT</th>
+                        <th class="px-4 py-3 border">Shift 1</th>
+                        <th class="px-4 py-3 border">Shift 2</th>
+                        <th class="px-4 py-3 border">Shift 1</th>
+                        <th class="px-4 py-3 border">Shift 2</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
