@@ -36,7 +36,7 @@ Route::post('detail-pit', [dataProdController::class, 'getPit'])->name('data-pro
 Route::get('dashboard/detail/{site}', [DashboardController::class, 'show'])->name('dashboard.show');
 
 // Komentar
-Route::post('/comment/store', [CommentController::class, 'store'])->name('comment.add');
-Route::post('/reply/store', [CommentController::class, 'replyStore'])->name('reply.add');
+Route::post('/comment/store', [CommentController::class, 'store'])->name('comments.store');
+Route::post('/reply/store', [CommentController::class, 'replyStore'])->name('reply.store');
 
 require __DIR__.'/auth.php';

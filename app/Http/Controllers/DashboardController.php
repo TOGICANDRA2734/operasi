@@ -244,16 +244,9 @@ class DashboardController extends Controller
         kodesite='".$site."'";
         $kendala = collect(DB::select($subquery));
 
+        $post = DB::table('pma_dailyprod_posts')->select('id')->where('kodesite', $site)->pluck('id');
+        $post = Post::find($post)->first();
 
-        $subquery = "SELECT * 
-        FROM pma_dailyprod_posts a
-        JOIN pma_dailyprod_comment b
-        ON a.kodesite = b.kodesite
-        JOIN pma_dailyprod_users c
-        ON b.user_id= c.id
-        WHERE a.kodesite='".$site."'";
-        $post = collect(DB::select($subquery));
-        
         return view('dashboard.show', compact('data','data_prod_ob','data_plan_ob','data_prod_coal','data_plan_coal', 'pit', 'kendala', 'post'));
     }
 }

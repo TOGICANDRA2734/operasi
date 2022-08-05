@@ -57,7 +57,6 @@ class dataProdController extends Controller
 
         $interval = DateInterval::createFromDateString('1 day');
         $period = new DatePeriod($begin, $interval, $end);
-        dd($period);
 
 
         return view('data-prod.index', compact('data', 'site', 'period'));

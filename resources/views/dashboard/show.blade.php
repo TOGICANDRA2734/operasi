@@ -160,38 +160,21 @@
     <!-- End Kendala -->
     <hr>
     <h4>Display Comments</h4>
-    @foreach($post as $p)
-        <div class="display-comment">
-            <strong>{{ $p->username }}</strong> <span>{{$p->waktu}}</span>
-            <p>{{ $p->body }}</p>
-            <a href="" id="reply"></a>
-            <form method="post" action="{{ route('reply.add') }}">
-                @csrf
-                <div class="form-group">
-                    <input type="text" name="comment_body" class="form-control" />
-                    <input type="hidden" name="post_id" value="$" />
-                    <input type="hidden" name="comment_id" value="$" />
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-warning" value="Reply" />
-                </div>
-            </form>
+  
+    @include('partials.commentsDisplay', ['comments' => $post->comments, 'post_id' => $post->id])
+    <h4>Add comment</h4>
+    <form method="post" action="{{ route('comments.store'   ) }}">
+        @csrf
+        <div class="form-group">
+            <textarea class="form-control" name="body"></textarea>
+            <input type="hidden" name="post_id" value="{{ $post->id }}" />
         </div>
-    @endforeach
-    <hr>
-    <div class="my-3">
-        <h4 class="text-lg mb-3 font-bold">Tambah Komentar</h4>
-        <form method="post" action="{{route('comment.add')}}">
-            @csrf
-            <div class="form-group">
-                <input required type="text" name="comment_body" class="form-control" />
-                <input type="hidden" name="post_id" value="{{$data[0]->kodesite}}" />
-            </div>
-            <div class="form-group">
-                <input type="submit" class="p-3 rounded-md bg-black text-white" value="Tambah" />
-            </div>
-        </form>
-    </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-success" value="Add Comment" />
+        </div>
+    </form>
+    <hr />
+    
 </div>
 
 
